@@ -1,7 +1,7 @@
 require 'sqlite3'
 require 'sinatra'
 require 'slim'
-# enable :sessions
+enable :sessions
 
 #Startsida
 get('/') do
@@ -23,8 +23,14 @@ post ('/create') do
     redirect('/')
 end
 
-get('/logged') do
-    slim(:logged)
+get('/logged/:id') do
+
+    if session[:id].to_s != params["id"].to_s
+        redirect('/')
+    else 
+        slim(:logged)
+    end
+    
 end
 
 post('/logged') do
@@ -38,12 +44,13 @@ post('/logged') do
     user_id = user_id.first["id"]
 
 
-
-#   p "user_id: #{user_id}"
-#   p "Password: #{password}"
-#   p "Current: #{current}"
+    session[:id] = user_id
+   p "session[:id]: #{session[:id]}" 
+   p "user_id: #{user_id}"
+   p "Password: #{password}"
+   p "Current: #{current}"
      if password == current
-        redirect('/logged')
+        redirect("/logged/#{user_id}")
      else
         redirect('/')
      end
