@@ -55,3 +55,11 @@ post('/logged') do
         redirect('/')
      end
 end
+
+get(/'createpost') do
+   slim(:createpost)
+end
+
+post(/'createpost') do
+
+end
